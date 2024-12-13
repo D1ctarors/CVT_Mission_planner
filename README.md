@@ -1,53 +1,40 @@
 # CVT_MissionPlanner
 
-Website :
+Сайт: -
 
-Download latest stable version :
+Скачать последнюю стабильную версию: -
 
-## How to compile
+## Как скомпилировать
 
-### On Windows
+### В Windows
 
-#### 1. Install software
+#### 1. Установка ПО и настройка среды
 
-##### Main requirements
+##### Основные требования
 
-Currently, Mission Planner needs:
-
-Visual Studio 2022 17.8
-
-##### IDE
+Для Mission Planner необходимы: Visual Studio 2022 17.8
 
 ### Visual Studio Community
 
-To compile Mission Planner, we recommend using Visual Studio. You can download Visual Studio Community from the [Visual Studio Download page](https://raw.githubusercontent.com/D1ctarors/CVT_Mission_planner/main/vs2022.vsconfig "vs2022.vsconfig").
+Для компиляции Mission Planner мы рекомендуем использовать Visual Studio версии 17.8. Вы можете скачать Visual Studio Community по ссылке [Visual Studio 17.8](https://raw.githubusercontent.com/D1ctarors/CVT_Mission_planner/main/visualstudiosetup_17.8.exe "visual_studio_setup_17.8.exe").
 
-Visual Studio is a comprehensive suite with built-in Git support, but it can be overwhelming due to its complexity. To streamline the installation process, you can customize your installation by selecting the relevant "Workloads" and "Individual components" based on your software development needs.
+Файл конфигурации, который определяет компоненты, необходимые для разработки MissionPlanner. Как использовать:
 
-To simplify this selection process, we have provided a configuration file that specifies the components required for MissionPlanner development. Here's how you can use it:
+1. Перейдите в раздел "Дополнительно" в установщике Visual Studio.
+2. Выберите "Импортировать конфигурацию"
+3. Используйте следующий файл: [vs2022.vsconfig](https://raw.githubusercontent.com/D1ctarors/CVT_Mission_planner/main/vs2022.vsconfig "vs2022.vsconfig").
 
-1. Go to "More" in the Visual Studio installer.
-2. Select "Import configuration."
-3. Use the following file: [vs2022.vsconfig](https://raw.githubusercontent.com/D1ctarors/CVT_Mission_planner/main/vs2022.vsconfig "vs2022.vsconfig").
+Следуя этим шагам, у вас будут установлены необходимые компоненты и вы будете готовы к разработке Mission Planner.
 
-By following these steps, you'll have the necessary components installed and ready for Mission Planner development.
+#### 2. Получение кода
 
-###### VSCode
+Если вы установите Visual Studio Community, вы сможете использовать Git из IDE.
 
-Currently VSCode with C# plugin is able to parse the code but cannot build.
+Клонируйте `https://github.com/D1ctarors/CVT_Mission_planner.git`, чтобы получить полный код.
 
-#### 2. Get the code
+#### 3. Сборка
 
-If you get Visual Studio Community, you should be able to use Git from the IDE.
-Clone `https://github.com/D1ctarors/CVT_Mission_planner.git` to get the full code.
+Чтобы собрать код:
 
-In case you didn't install an IDE, you will need to manually install Git. Please follow instruction in https://ardupilot.org/dev/docs/where-to-get-the-code.html#downloading-the-code-using-git
-
-Open a git bash terminal in the MissionPlanner directory and type, "git submodule update --init" to download all submodules
-
-#### 3. Build
-
-To build the code:
-
-- Open MissionPlanner.sln with Visual Studio
-- From the Build menu, select "Build MissionPlanner"
+- Откройте файл `MissionPlanner.sln` в Visual Studio
+- В меню **Build** выберите **"Build MissionPlanner"**
