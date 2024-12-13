@@ -5,30 +5,40 @@ using System.Windows.Forms;
 
 namespace YourNamespace
 {
-    // Предполагается, что есть класс CurrentState с нужными полями, например:
+    // Предполагается, что есть класс CurrentState с нужными свойствами:
     // public class CurrentState
     // {
-    //     public float h_plant_output_voltag; // Вольтаж
-    //     public float h_plant_temp1;         // Температура
-    //     public float h_plant_pressure;      // Давление
-    //     public float h_plant_fan;           // ШИМ вентиляторов
-    //     public float h_plant_runtime;       // Время работы
-    //     public float h_plant_te_voltage;    // ТЭ Вольтаж
-    //     public float h_plant_current;       // Потребление (А)
-    //     public string errors;               // Строка ошибок (если есть)
+    //     public float h_plant_temp1 { get; set; }
+    //     public float h_plant_temp2 { get; set; }
+    //     public float h_plant_pressure { get; set; }
+    //     public float h_plant_current { get; set; }
+    //     public float h_plant_battery_voltage { get; set; }
+    //     public float h_plant_output_voltage { get; set; }
+    //     public float h_plant_te_voltage { get; set; }
+    //     public int   h_plant_runtime { get; set; }
+    //     public int   h_plant_fan { get; set; }
+    //     public int   h_plant_counter { get; set; }
+    //     public int   h_plant_status { get; set; }
+    //     public string h_plant_errors { get; set; }
     // }
 
     public class FormEmpty : Form
     {
         private CurrentState currentState;
 
-        private Label lblVoltage;
-        private Label lblTemperature;
+        // Лейблы для параметров
+        private Label lblTemp1;
+        private Label lblTemp2;
         private Label lblPressure;
-        private Label lblFanPWM;
-        private Label lblWorkTime;
-        private Label lblTEVoltage;
         private Label lblCurrent;
+        private Label lblBatteryVoltage;
+        private Label lblOutputVoltage;
+        private Label lblTEVoltage;
+        private Label lblRuntime;
+        private Label lblFan;
+        private Label lblCounter;
+        private Label lblStatus;
+
         private Label lblErrorList;
 
         private Timer updateTimer;
@@ -42,22 +52,26 @@ namespace YourNamespace
             this.BackColor = Color.Black;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.Size = new Size(800, 400);
+            this.Size = new Size(1000, 600);
 
-            // Основная таблица: 2 столбца - слева параметры, справа ошибки
+            // Создаём основную таблицу: 3 столбца
+            // 1-й столбец: статус (для примера - зелёные кнопки)
+            // 2-й столбец: показания (наши параметры)
+            // 3-й столбец: ошибки
             TableLayoutPanel mainTable = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
-                ColumnCount = 2,
+                ColumnCount = 3,
                 RowCount = 1,
                 BackColor = Color.Black,
                 Padding = new Padding(20)
             };
-            mainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
-            mainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+            mainTable.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            mainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            mainTable.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
             this.Controls.Add(mainTable);
 
-            // Левая панель для параметров
+            // Левая панель - статусы (для примерного сходства с макетом)
             FlowLayoutPanel leftPanel = new FlowLayoutPanel
             {
                 FlowDirection = FlowDirection.TopDown,
@@ -67,7 +81,49 @@ namespace YourNamespace
             };
             mainTable.Controls.Add(leftPanel, 0, 0);
 
-            // Функция для создания однотипных лейблов параметров
+            // Пример статусов (зелёные кнопки)
+            string[] statusTexts = { "Авария", "Запуск", "Работа", "Нагрузка вкл.", "Короткое ТЭ", "Клапан подачи", "Клапан сброса" };
+            foreach (var text in statusTexts)
+            {
+                Button btn = new Button
+                {
+                    Text = text,
+                    ForeColor = Color.White,
+                    BackColor = Color.Green,
+                    FlatStyle = FlatStyle.Flat,
+                    Width = 150,
+                    Height = 40,
+                    Font = new Font("Arial", 12, FontStyle.Regular),
+                    Margin = new Padding(0, 10, 0, 0)
+                };
+                btn.FlatAppearance.BorderSize = 0;
+                leftPanel.Controls.Add(btn);
+            }
+
+            // Центральная панель - Показания
+            FlowLayoutPanel middlePanel = new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.TopDown,
+                Dock = DockStyle.Fill,
+                BackColor = Color.Black,
+                AutoScroll = true,
+                Padding = new Padding(20, 0, 20, 0)
+            };
+            mainTable.Controls.Add(middlePanel, 1, 0);
+
+            // Заголовок "Показания"
+            Label lblDataTitle = new Label
+            {
+                Text = "Показания",
+                ForeColor = Color.White,
+                BackColor = Color.Black,
+                Font = new Font("Arial", 16, FontStyle.Bold),
+                AutoSize = true,
+                Margin = new Padding(0, 0, 0, 20)
+            };
+            middlePanel.Controls.Add(lblDataTitle);
+
+            // Функция создания лейблов для параметров
             Label CreateParamLabel(string text)
             {
                 return new Label
@@ -81,30 +137,42 @@ namespace YourNamespace
                 };
             }
 
-            lblVoltage = CreateParamLabel("Напряжение: ...");
-            lblTemperature = CreateParamLabel("Температура: ...");
+            // Создаём лейблы для всех нужных полей
+            lblTemp1 = CreateParamLabel("Температура 1: ...");
+            lblTemp2 = CreateParamLabel("Температура 2: ...");
             lblPressure = CreateParamLabel("Давление: ...");
-            lblFanPWM = CreateParamLabel("ШИМ вентиляторов: ...");
-            lblWorkTime = CreateParamLabel("Время работы: ...");
-            lblTEVoltage = CreateParamLabel("ТЭ Вольтаж: ...");
             lblCurrent = CreateParamLabel("Потребление (А): ...");
+            lblBatteryVoltage = CreateParamLabel("Напряжение батареи: ...");
+            lblOutputVoltage = CreateParamLabel("Выходное напряжение: ...");
+            lblTEVoltage = CreateParamLabel("ТЭ Вольтаж: ...");
+            lblRuntime = CreateParamLabel("Время работы: ...");
+            lblFan = CreateParamLabel("ШИМ вентиляторов: ...");
+            lblCounter = CreateParamLabel("Счётчик: ...");
+            lblStatus = CreateParamLabel("Статус: ...");
 
-            leftPanel.Controls.Add(lblVoltage);
-            leftPanel.Controls.Add(lblTemperature);
-            leftPanel.Controls.Add(lblPressure);
-            leftPanel.Controls.Add(lblFanPWM);
-            leftPanel.Controls.Add(lblWorkTime);
-            leftPanel.Controls.Add(lblTEVoltage);
-            leftPanel.Controls.Add(lblCurrent);
+            // Добавляем их в центральную панель
+            middlePanel.Controls.Add(lblTemp1);
+            middlePanel.Controls.Add(lblTemp2);
+            middlePanel.Controls.Add(lblPressure);
+            middlePanel.Controls.Add(lblCurrent);
+            middlePanel.Controls.Add(lblBatteryVoltage);
+            middlePanel.Controls.Add(lblOutputVoltage);
+            middlePanel.Controls.Add(lblTEVoltage);
+            middlePanel.Controls.Add(lblRuntime);
+            middlePanel.Controls.Add(lblFan);
+            middlePanel.Controls.Add(lblCounter);
+            middlePanel.Controls.Add(lblStatus);
 
             // Правая панель (Ошибки)
-            Panel rightPanel = new Panel
+            FlowLayoutPanel rightPanel = new FlowLayoutPanel
             {
-                BackColor = Color.Black,
+                FlowDirection = FlowDirection.TopDown,
                 Dock = DockStyle.Fill,
-                AutoScroll = true
+                BackColor = Color.Black,
+                AutoScroll = true,
+                Padding = new Padding(20, 0, 0, 0)
             };
-            mainTable.Controls.Add(rightPanel, 1, 0);
+            mainTable.Controls.Add(rightPanel, 2, 0);
 
             Label lblErrorsTitle = new Label
             {
@@ -113,7 +181,7 @@ namespace YourNamespace
                 BackColor = Color.Black,
                 Font = new Font("Arial", 16, FontStyle.Bold),
                 AutoSize = true,
-                Location = new Point(0, 0)
+                Margin = new Padding(0, 0, 0, 20)
             };
             rightPanel.Controls.Add(lblErrorsTitle);
 
@@ -123,27 +191,31 @@ namespace YourNamespace
                 ForeColor = Color.White,
                 BackColor = Color.Black,
                 Font = new Font("Arial", 12, FontStyle.Regular),
-                AutoSize = true,
-                Location = new Point(0, 40)
+                AutoSize = true
             };
             rightPanel.Controls.Add(lblErrorList);
 
             // Таймер для обновления данных
             updateTimer = new Timer();
-            updateTimer.Interval = 1000; // обновление раз в секунду
+            updateTimer.Interval = 1000; // Обновление раз в секунду
             updateTimer.Tick += UpdateLabels;
             updateTimer.Start();
         }
 
         private void UpdateLabels(object sender, EventArgs e)
         {
-            // Обновляем значения на форме в соответствии с currentState
-            lblTemperature.Text = $"Температура: {currentState.h_plant_temp1:F1} °C";
+            // Обновляем значения
+            lblTemp1.Text = $"Температура 1: {currentState.h_plant_temp1:F1} °C";
+            lblTemp2.Text = $"Температура 2: {currentState.h_plant_temp2:F1} °C";
             lblPressure.Text = $"Давление: {currentState.h_plant_pressure:F1} атм";
-            lblFanPWM.Text = $"ШИМ вентиляторов: {currentState.h_plant_fan:F0}%";
-            lblWorkTime.Text = $"Время работы: {currentState.h_plant_runtime:F0} сек";
-            lblTEVoltage.Text = $"ТЭ Вольтаж: {currentState.h_plant_te_voltage:F2} В";
             lblCurrent.Text = $"Потребление (А): {currentState.h_plant_current:F2} А";
+            lblBatteryVoltage.Text = $"Напряжение батареи: {currentState.h_plant_battery_voltage:F2} В";
+            lblOutputVoltage.Text = $"Выходное напряжение: {currentState.h_plant_output_voltage:F2} В";
+            lblTEVoltage.Text = $"ТЭ Вольтаж: {currentState.h_plant_te_voltage:F2} В";
+            lblRuntime.Text = $"Время работы: {currentState.h_plant_runtime} сек";
+            lblFan.Text = $"ШИМ вентиляторов: {currentState.h_plant_fan}%";
+            lblCounter.Text = $"Счётчик: {currentState.h_plant_counter}";
+            lblStatus.Text = $"Статус: {currentState.h_plant_status}";
 
         }
     }
