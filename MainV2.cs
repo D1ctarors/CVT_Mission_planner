@@ -4066,8 +4066,8 @@ namespace MissionPlanner
 
         private void MenuHelp_Click(object sender, EventArgs e)
         {
-            FormEmpty emptyForm = new FormEmpty();
-            emptyForm.Show();
+            FormEmpty form = new FormEmpty(new CurrentState());
+            form.Show();
         }
 
 
