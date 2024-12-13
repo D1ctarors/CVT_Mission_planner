@@ -46,6 +46,7 @@ using System.Numerics;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using static MAVLink;
 using DroneCAN;
+using YourNamespace;
 
 namespace MissionPlanner
 {
@@ -4065,7 +4066,8 @@ namespace MissionPlanner
 
         private void MenuHelp_Click(object sender, EventArgs e)
         {
-            MyView.ShowScreen("Help");
+            FormEmpty emptyForm = new FormEmpty();
+            emptyForm.Show();
         }
 
 
