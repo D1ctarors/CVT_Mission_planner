@@ -5957,6 +5957,22 @@ namespace MissionPlanner.GCSViews
             var cs = bindingSourceStatusTab.Current as CurrentState;
             var br = new SolidBrush(tabStatus.ForeColor);
 
+            /*
+            if (cs != null)
+            {
+                g.DrawString("Status", this.Font, br, new RectangleF(x, y, 120, 15));
+                g.DrawString(cs.GetStatusDescription(), this.Font, br, new RectangleF(x + 120, y, 200, 15));
+                y += 15;
+
+                g.DrawString("Errors", this.Font, br, new RectangleF(x, y, 120, 15));
+                g.DrawString(cs.GetErrorsDescription(), this.Font, br, new RectangleF(x + 120, y, 200, 15));
+                y += 15;
+            }
+            */
+
+
+
+
             foreach (var field in list)
             {
                 g.DrawString(field, this.Font, br, new RectangleF(x, y, 120, 15));

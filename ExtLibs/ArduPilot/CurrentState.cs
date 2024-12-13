@@ -117,6 +117,54 @@ namespace MissionPlanner
         public int lastautowp = -1;
 
         private DateTime lastdata = DateTime.MinValue;
+        
+        // Водородная установка
+        public float h_plant_temp1 { get; set; }
+        public float h_plant_temp2 { get; set; }
+        public float h_plant_pressure { get; set; }
+        public float h_plant_current { get; set; }
+        public float h_plant_battery_voltage { get; set; }
+        public float h_plant_output_voltage { get; set; }
+        public float h_plant_te_voltage { get; set; }
+        public int h_plant_runtime { get; set; }
+        public int h_plant_fan { get; set; }
+        public int h_plant_counter { get; set; }
+        public int h_plant_status { get; set; }
+        public int h_plant_errors { get; set; }
+
+        public string GetStatusDescription()
+        {
+            var status = h_plant_status;
+            List<string> descriptions = new List<string>();
+
+            if ((status & 1) != 0) descriptions.Add("Авария");
+            if ((status & 2) != 0) descriptions.Add("Запуск");
+            if ((status & 4) != 0) descriptions.Add("Работа");
+            if ((status & 8) != 0) descriptions.Add("Нагрузка ВКЛ");
+            if ((status & 16) != 0) descriptions.Add("Закоротка ТЭ");
+            if ((status & 32) != 0) descriptions.Add("Клапан подачи");
+            if ((status & 64) != 0) descriptions.Add("Клапан сброса");
+
+            return descriptions.Count > 0 ? string.Join(", ", descriptions) : "Нет активных статусов";
+        }
+
+        public string GetErrorsDescription()
+        {
+            var errors = h_plant_errors;
+            List<string> descriptions = new List<string>();
+
+            if ((errors & 1) != 0) descriptions.Add("Низкий ЭДС аккумулятора");
+            if ((errors & 2) != 0) descriptions.Add("Давление по датчику");
+            if ((errors & 4) != 0) descriptions.Add("Низкое давление по СК");
+            if ((errors & 8) != 0) descriptions.Add("Утечка водорода по СК");
+            if ((errors & 16) != 0) descriptions.Add("ЭДС ТЭ");
+            if ((errors & 32) != 0) descriptions.Add("Перегрев ТЭ");
+
+            return descriptions.Count > 0 ? string.Join(", ", descriptions) : "Ошибок нет";
+        }
+
+
+
 
         // for calc of sitl speedup
         internal DateTime lastimutime = DateTime.MinValue;

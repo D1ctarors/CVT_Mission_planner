@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 public partial class MAVLink
 {
-    public const string MAVLINK_BUILD_DATE = "Mon Nov 18 2024";
+    public const string MAVLINK_BUILD_DATE = "Fri Dec 13 2024";
     public const string MAVLINK_WIRE_PROTOCOL_VERSION = "2.0";
     public const int MAVLINK_MAX_PAYLOAD_LEN = 255;
 
@@ -340,6 +340,7 @@ public partial class MAVLink
         new message_info(11042, "ESC_TELEMETRY_21_TO_24", 201, 44, 44, typeof( mavlink_esc_telemetry_21_to_24_t )),
         new message_info(11043, "ESC_TELEMETRY_25_TO_28", 193, 44, 44, typeof( mavlink_esc_telemetry_25_to_28_t )),
         new message_info(11044, "ESC_TELEMETRY_29_TO_32", 189, 44, 44, typeof( mavlink_esc_telemetry_29_to_32_t )),
+        new message_info(11045, "HYDROGEN_PLANT", 18, 35, 35, typeof( mavlink_hydrogen_plant_t )),
         new message_info(12900, "OPEN_DRONE_ID_BASIC_ID", 114, 44, 44, typeof( mavlink_open_drone_id_basic_id_t )),
         new message_info(12901, "OPEN_DRONE_ID_LOCATION", 254, 59, 59, typeof( mavlink_open_drone_id_location_t )),
         new message_info(12902, "OPEN_DRONE_ID_AUTHENTICATION", 140, 53, 53, typeof( mavlink_open_drone_id_authentication_t )),
@@ -722,6 +723,7 @@ public partial class MAVLink
         ESC_TELEMETRY_21_TO_24 = 11042,
         ESC_TELEMETRY_25_TO_28 = 11043,
         ESC_TELEMETRY_29_TO_32 = 11044,
+        HYDROGEN_PLANT = 11045,
         OPEN_DRONE_ID_BASIC_ID = 12900,
         OPEN_DRONE_ID_LOCATION = 12901,
         OPEN_DRONE_ID_AUTHENTICATION = 12902,
@@ -13359,6 +13361,125 @@ public partial class MAVLink
         //[FieldOffset(40)]
         [MarshalAs(UnmanagedType.ByValArray,SizeConst=4)]
 		public byte[] temperature;
+    };
+
+    
+    /// extensions_start 0
+    [StructLayout(LayoutKind.Sequential,Pack=1,Size=35)]
+    ///<summary> Message describing the state of a hydrogen plant </summary>
+    public struct mavlink_hydrogen_plant_t
+    {
+        /// packet ordered constructor
+        public mavlink_hydrogen_plant_t(float current,float battery_voltage,float output_voltage,float te_voltage,uint runtime,uint counter,short pressure,short temperature_1,short temperature_2,ushort status,ushort errors,byte fan) 
+        {
+            this.current = current;
+            this.battery_voltage = battery_voltage;
+            this.output_voltage = output_voltage;
+            this.te_voltage = te_voltage;
+            this.runtime = runtime;
+            this.counter = counter;
+            this.pressure = pressure;
+            this.temperature_1 = temperature_1;
+            this.temperature_2 = temperature_2;
+            this.status = status;
+            this.errors = errors;
+            this.fan = fan;
+            
+        }
+        
+        /// packet xml order
+        public static mavlink_hydrogen_plant_t PopulateXMLOrder(float current,float battery_voltage,float output_voltage,float te_voltage,uint runtime,short pressure,short temperature_1,short temperature_2,byte fan,ushort status,ushort errors,uint counter) 
+        {
+            var msg = new mavlink_hydrogen_plant_t();
+
+            msg.current = current;
+            msg.battery_voltage = battery_voltage;
+            msg.output_voltage = output_voltage;
+            msg.te_voltage = te_voltage;
+            msg.runtime = runtime;
+            msg.pressure = pressure;
+            msg.temperature_1 = temperature_1;
+            msg.temperature_2 = temperature_2;
+            msg.fan = fan;
+            msg.status = status;
+            msg.errors = errors;
+            msg.counter = counter;
+            
+            return msg;
+        }
+        
+
+        /// <summary>Current consumption in amperes.  [A] </summary>
+        [Units("[A]")]
+        [Description("Current consumption in amperes.")]
+        //[FieldOffset(0)]
+        public  float current;
+
+        /// <summary>Battery voltage.  [V] </summary>
+        [Units("[V]")]
+        [Description("Battery voltage.")]
+        //[FieldOffset(4)]
+        public  float battery_voltage;
+
+        /// <summary>Output voltage.  [V] </summary>
+        [Units("[V]")]
+        [Description("Output voltage.")]
+        //[FieldOffset(8)]
+        public  float output_voltage;
+
+        /// <summary>Thermal element voltage.  [V] </summary>
+        [Units("[V]")]
+        [Description("Thermal element voltage.")]
+        //[FieldOffset(12)]
+        public  float te_voltage;
+
+        /// <summary>Runtime.  [s] </summary>
+        [Units("[s]")]
+        [Description("Runtime.")]
+        //[FieldOffset(16)]
+        public  uint runtime;
+
+        /// <summary>Counter messages.   </summary>
+        [Units("")]
+        [Description("Counter messages.")]
+        //[FieldOffset(20)]
+        public  uint counter;
+
+        /// <summary>Absolute pressure in hectopascals.  [hPa] </summary>
+        [Units("[hPa]")]
+        [Description("Absolute pressure in hectopascals.")]
+        //[FieldOffset(24)]
+        public  short pressure;
+
+        /// <summary>Temperature 1.  [degC] </summary>
+        [Units("[degC]")]
+        [Description("Temperature 1.")]
+        //[FieldOffset(26)]
+        public  short temperature_1;
+
+        /// <summary>Temperature 2.  [degC] </summary>
+        [Units("[degC]")]
+        [Description("Temperature 2.")]
+        //[FieldOffset(28)]
+        public  short temperature_2;
+
+        /// <summary>Status.   </summary>
+        [Units("")]
+        [Description("Status.")]
+        //[FieldOffset(30)]
+        public  ushort status;
+
+        /// <summary>Errors.   </summary>
+        [Units("")]
+        [Description("Errors.")]
+        //[FieldOffset(32)]
+        public  ushort errors;
+
+        /// <summary>Fan PWM duty cycle.  [%] </summary>
+        [Units("[%]")]
+        [Description("Fan PWM duty cycle.")]
+        //[FieldOffset(34)]
+        public  byte fan;
     };
 
     

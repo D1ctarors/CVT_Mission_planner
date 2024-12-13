@@ -93,6 +93,7 @@ messageName = {
     [11042] = 'ESC_TELEMETRY_21_TO_24',
     [11043] = 'ESC_TELEMETRY_25_TO_28',
     [11044] = 'ESC_TELEMETRY_29_TO_32',
+    [11045] = 'HYDROGEN_PLANT',
     [223] = 'COMMAND_INT_STAMPED',
     [224] = 'COMMAND_LONG_STAMPED',
     [8002] = 'SENS_POWER',
@@ -5333,6 +5334,19 @@ f.ESC_TELEMETRY_29_TO_32_count_0 = ProtoField.new("count[0] (uint16_t)", "mavlin
 f.ESC_TELEMETRY_29_TO_32_count_1 = ProtoField.new("count[1] (uint16_t)", "mavlink_proto.ESC_TELEMETRY_29_TO_32_count_1", ftypes.UINT16, nil)
 f.ESC_TELEMETRY_29_TO_32_count_2 = ProtoField.new("count[2] (uint16_t)", "mavlink_proto.ESC_TELEMETRY_29_TO_32_count_2", ftypes.UINT16, nil)
 f.ESC_TELEMETRY_29_TO_32_count_3 = ProtoField.new("count[3] (uint16_t)", "mavlink_proto.ESC_TELEMETRY_29_TO_32_count_3", ftypes.UINT16, nil)
+
+f.HYDROGEN_PLANT_current = ProtoField.new("current (float)", "mavlink_proto.HYDROGEN_PLANT_current", ftypes.FLOAT, nil)
+f.HYDROGEN_PLANT_battery_voltage = ProtoField.new("battery_voltage (float)", "mavlink_proto.HYDROGEN_PLANT_battery_voltage", ftypes.FLOAT, nil)
+f.HYDROGEN_PLANT_output_voltage = ProtoField.new("output_voltage (float)", "mavlink_proto.HYDROGEN_PLANT_output_voltage", ftypes.FLOAT, nil)
+f.HYDROGEN_PLANT_te_voltage = ProtoField.new("te_voltage (float)", "mavlink_proto.HYDROGEN_PLANT_te_voltage", ftypes.FLOAT, nil)
+f.HYDROGEN_PLANT_runtime = ProtoField.new("runtime (uint32_t)", "mavlink_proto.HYDROGEN_PLANT_runtime", ftypes.UINT32, nil)
+f.HYDROGEN_PLANT_pressure = ProtoField.new("pressure (int16_t)", "mavlink_proto.HYDROGEN_PLANT_pressure", ftypes.INT16, nil)
+f.HYDROGEN_PLANT_temperature_1 = ProtoField.new("temperature_1 (int16_t)", "mavlink_proto.HYDROGEN_PLANT_temperature_1", ftypes.INT16, nil)
+f.HYDROGEN_PLANT_temperature_2 = ProtoField.new("temperature_2 (int16_t)", "mavlink_proto.HYDROGEN_PLANT_temperature_2", ftypes.INT16, nil)
+f.HYDROGEN_PLANT_fan = ProtoField.new("fan (uint8_t)", "mavlink_proto.HYDROGEN_PLANT_fan", ftypes.UINT8, nil)
+f.HYDROGEN_PLANT_status = ProtoField.new("status (uint16_t)", "mavlink_proto.HYDROGEN_PLANT_status", ftypes.UINT16, nil)
+f.HYDROGEN_PLANT_errors = ProtoField.new("errors (uint16_t)", "mavlink_proto.HYDROGEN_PLANT_errors", ftypes.UINT16, nil)
+f.HYDROGEN_PLANT_counter = ProtoField.new("counter (uint32_t)", "mavlink_proto.HYDROGEN_PLANT_counter", ftypes.UINT32, nil)
 
 f.COMMAND_INT_STAMPED_utc_time = ProtoField.new("utc_time (uint32_t)", "mavlink_proto.COMMAND_INT_STAMPED_utc_time", ftypes.UINT32, nil)
 f.COMMAND_INT_STAMPED_vehicle_timestamp = ProtoField.new("vehicle_timestamp (uint64_t)", "mavlink_proto.COMMAND_INT_STAMPED_vehicle_timestamp", ftypes.UINT64, nil)
@@ -18546,6 +18560,53 @@ function payload_fns.payload_11044(buffer, tree, msgid, offset, limit, pinfo)
     tvbrange = padded(offset + 38, 2)
     value = tvbrange:le_uint()
     subtree = tree:add_le(f.ESC_TELEMETRY_29_TO_32_count_3, tvbrange, value)
+end
+-- dissect payload of message type HYDROGEN_PLANT
+function payload_fns.payload_11045(buffer, tree, msgid, offset, limit, pinfo)
+    local padded, field_offset, value, subtree, tvbrange
+    if (offset + 35 > limit) then
+        padded = buffer(0, limit):bytes()
+        padded:set_size(offset + 35)
+        padded = padded:tvb("Untruncated payload")
+    else
+        padded = buffer
+    end
+    tvbrange = padded(offset + 0, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.HYDROGEN_PLANT_current, tvbrange, value)
+    tvbrange = padded(offset + 4, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.HYDROGEN_PLANT_battery_voltage, tvbrange, value)
+    tvbrange = padded(offset + 8, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.HYDROGEN_PLANT_output_voltage, tvbrange, value)
+    tvbrange = padded(offset + 12, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.HYDROGEN_PLANT_te_voltage, tvbrange, value)
+    tvbrange = padded(offset + 16, 4)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.HYDROGEN_PLANT_runtime, tvbrange, value)
+    tvbrange = padded(offset + 24, 2)
+    value = tvbrange:le_int()
+    subtree = tree:add_le(f.HYDROGEN_PLANT_pressure, tvbrange, value)
+    tvbrange = padded(offset + 26, 2)
+    value = tvbrange:le_int()
+    subtree = tree:add_le(f.HYDROGEN_PLANT_temperature_1, tvbrange, value)
+    tvbrange = padded(offset + 28, 2)
+    value = tvbrange:le_int()
+    subtree = tree:add_le(f.HYDROGEN_PLANT_temperature_2, tvbrange, value)
+    tvbrange = padded(offset + 34, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.HYDROGEN_PLANT_fan, tvbrange, value)
+    tvbrange = padded(offset + 30, 2)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.HYDROGEN_PLANT_status, tvbrange, value)
+    tvbrange = padded(offset + 32, 2)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.HYDROGEN_PLANT_errors, tvbrange, value)
+    tvbrange = padded(offset + 20, 4)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.HYDROGEN_PLANT_counter, tvbrange, value)
 end
 -- dissect payload of message type COMMAND_INT_STAMPED
 function payload_fns.payload_223(buffer, tree, msgid, offset, limit, pinfo)

@@ -1095,6 +1095,30 @@ Mission Planner waits for 2 valid heartbeat packets before connecting
             log.InfoFormat("ID sys {0} comp {1} ver{2} type {3} name {4}", message.sysid, message.compid,
                 mavlinkversion,
                 MAVlist[message.sysid, message.compid].aptype.ToString(), MAVlist[message.sysid, message.compid].apname.ToString());
+
+            var sub = SubscribeToPacketType(MAVLINK_MSG_ID.HYDROGEN_PLANT, buffer =>
+            {
+                var hydrogenPlant = buffer.ToStructure<MAVLink.mavlink_hydrogen_plant_t>();
+
+                MAV.cs.h_plant_current = hydrogenPlant.current;
+                MAV.cs.h_plant_battery_voltage = hydrogenPlant.battery_voltage;
+                MAV.cs.h_plant_output_voltage = hydrogenPlant.output_voltage;
+                MAV.cs.h_plant_te_voltage = hydrogenPlant.te_voltage;
+                MAV.cs.h_plant_runtime = (int)hydrogenPlant.runtime;
+                MAV.cs.h_plant_pressure = hydrogenPlant.pressure;
+                MAV.cs.h_plant_temp1 = hydrogenPlant.temperature_1;
+                MAV.cs.h_plant_temp2 = hydrogenPlant.temperature_2;
+                MAV.cs.h_plant_fan = hydrogenPlant.fan;
+                MAV.cs.h_plant_status = hydrogenPlant.status;
+                MAV.cs.h_plant_errors = hydrogenPlant.errors;
+                MAV.cs.h_plant_counter = (int)hydrogenPlant.counter;
+
+                log.Info($"HYDROGEN_PLANT Status: {MAV.cs.GetStatusDescription()}");
+                log.Info($"HYDROGEN_PLANT Errors: {MAV.cs.GetErrorsDescription()}");
+
+                return true;
+            }, (byte)message.sysid, (byte)message.compid);
+
         }
 
         private void SetupMavConnect(MAVLinkMessage message, mavlink_high_latency2_t hl)
