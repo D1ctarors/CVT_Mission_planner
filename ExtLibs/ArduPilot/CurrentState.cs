@@ -132,6 +132,15 @@ namespace MissionPlanner
         public int h_plant_status { get; set; }
         public int h_plant_errors { get; set; }
 
+        public event Action<CurrentState> OnDataUpdated;
+
+        public void UpdateData()
+        {
+            // Этот метод вызывается, когда обновляются значения
+            OnDataUpdated?.Invoke(this);
+        }
+
+
         public string GetStatusDescription()
         {
             var status = h_plant_status;

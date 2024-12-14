@@ -4066,9 +4066,23 @@ namespace MissionPlanner
 
         private void MenuHelp_Click(object sender, EventArgs e)
         {
-            FormEmpty form = new FormEmpty(new CurrentState());
-            form.Show();
+            FormEmpty emptyForm = new FormEmpty();
+            emptyForm.Show();
+
+            if (MainV2.comPort != null && MainV2.comPort.MAV.cs != null)
+            {
+                MainV2.comPort.MAV.cs.OnDataUpdated += (cs) =>
+                {
+                    emptyForm.UpdatePlantData(cs);
+                };
+            }
+            else
+            {
+                MessageBox.Show("Ошибка: MAV.cs = null");
+            }
         }
+
+
 
 
         /// <summary>

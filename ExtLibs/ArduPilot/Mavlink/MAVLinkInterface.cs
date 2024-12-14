@@ -1116,6 +1116,8 @@ Mission Planner waits for 2 valid heartbeat packets before connecting
                 log.Info($"HYDROGEN_PLANT Status: {MAV.cs.GetStatusDescription()}");
                 log.Info($"HYDROGEN_PLANT Errors: {MAV.cs.GetErrorsDescription()}");
 
+                MAV.cs.UpdateData();
+
                 return true;
             }, (byte)message.sysid, (byte)message.compid);
 
