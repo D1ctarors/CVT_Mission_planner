@@ -124,7 +124,7 @@
     <value>ПЛАН ПОЛЕТА</value>
   </data>
   <data name="MenuHelp.Text" xml:space="preserve">
-    <value>ПОМОЩЬ</value>
+    <value>УСТАНОВКА</value>
   </data>
   <data name="connectionListToolStripMenuItem.Text" xml:space="preserve">
     <value>Список подключений</value>
@@ -172,7 +172,7 @@
     <value>МОДЕЛИРОВАНИЕ</value>
   </data>
   <data name="MenuHelp.ToolTipText" xml:space="preserve">
-    <value>Помощь</value>
+    <value>Водородная установка</value>
   </data>
   <data name="MenuTerminal.ToolTipText" xml:space="preserve">
     <value>Терминал</value>
