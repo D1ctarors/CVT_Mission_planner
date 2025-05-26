@@ -131,6 +131,7 @@ namespace MissionPlanner
         public int h_plant_counter { get; set; }
         public int h_plant_status { get; set; }
         public int h_plant_errors { get; set; }
+        public int h_plant_identifikator { get; set; }
 
         public event Action<CurrentState> OnDataUpdated;
 

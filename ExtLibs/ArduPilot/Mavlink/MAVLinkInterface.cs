@@ -1099,7 +1099,7 @@ Mission Planner waits for 2 valid heartbeat packets before connecting
             var sub = SubscribeToPacketType(MAVLINK_MSG_ID.HYDROGEN_PLANT, buffer =>
             {
                 var hydrogenPlant = buffer.ToStructure<MAVLink.mavlink_hydrogen_plant_t>();
-
+                MAV.cs.h_plant_identifikator = hydrogenPlant.identifikator;
                 MAV.cs.h_plant_current = hydrogenPlant.current;
                 MAV.cs.h_plant_battery_voltage = hydrogenPlant.battery_voltage;
                 MAV.cs.h_plant_output_voltage = hydrogenPlant.output_voltage;

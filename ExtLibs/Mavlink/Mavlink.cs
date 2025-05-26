@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 public partial class MAVLink
 {
-    public const string MAVLINK_BUILD_DATE = "Fri Dec 13 2024";
+    public const string MAVLINK_BUILD_DATE = "Mon May 26 2025";
     public const string MAVLINK_WIRE_PROTOCOL_VERSION = "2.0";
     public const int MAVLINK_MAX_PAYLOAD_LEN = 255;
 
@@ -340,7 +340,7 @@ public partial class MAVLink
         new message_info(11042, "ESC_TELEMETRY_21_TO_24", 201, 44, 44, typeof( mavlink_esc_telemetry_21_to_24_t )),
         new message_info(11043, "ESC_TELEMETRY_25_TO_28", 193, 44, 44, typeof( mavlink_esc_telemetry_25_to_28_t )),
         new message_info(11044, "ESC_TELEMETRY_29_TO_32", 189, 44, 44, typeof( mavlink_esc_telemetry_29_to_32_t )),
-        new message_info(11045, "HYDROGEN_PLANT", 18, 35, 35, typeof( mavlink_hydrogen_plant_t )),
+        new message_info(11045, "HYDROGEN_PLANT", 123, 36, 36, typeof( mavlink_hydrogen_plant_t )),
         new message_info(12900, "OPEN_DRONE_ID_BASIC_ID", 114, 44, 44, typeof( mavlink_open_drone_id_basic_id_t )),
         new message_info(12901, "OPEN_DRONE_ID_LOCATION", 254, 59, 59, typeof( mavlink_open_drone_id_location_t )),
         new message_info(12902, "OPEN_DRONE_ID_AUTHENTICATION", 140, 53, 53, typeof( mavlink_open_drone_id_authentication_t )),
@@ -13365,12 +13365,12 @@ public partial class MAVLink
 
     
     /// extensions_start 0
-    [StructLayout(LayoutKind.Sequential,Pack=1,Size=35)]
+    [StructLayout(LayoutKind.Sequential,Pack=1,Size=36)]
     ///<summary> Message describing the state of a hydrogen plant </summary>
     public struct mavlink_hydrogen_plant_t
     {
         /// packet ordered constructor
-        public mavlink_hydrogen_plant_t(float current,float battery_voltage,float output_voltage,float te_voltage,uint runtime,uint counter,short pressure,short temperature_1,short temperature_2,ushort status,ushort errors,byte fan) 
+        public mavlink_hydrogen_plant_t(float current,float battery_voltage,float output_voltage,float te_voltage,uint runtime,uint counter,short pressure,short temperature_1,short temperature_2,ushort status,ushort errors,sbyte identifikator,byte fan) 
         {
             this.current = current;
             this.battery_voltage = battery_voltage;
@@ -13383,15 +13383,17 @@ public partial class MAVLink
             this.temperature_2 = temperature_2;
             this.status = status;
             this.errors = errors;
+            this.identifikator = identifikator;
             this.fan = fan;
             
         }
         
         /// packet xml order
-        public static mavlink_hydrogen_plant_t PopulateXMLOrder(float current,float battery_voltage,float output_voltage,float te_voltage,uint runtime,short pressure,short temperature_1,short temperature_2,byte fan,ushort status,ushort errors,uint counter) 
+        public static mavlink_hydrogen_plant_t PopulateXMLOrder(sbyte identifikator,float current,float battery_voltage,float output_voltage,float te_voltage,uint runtime,short pressure,short temperature_1,short temperature_2,byte fan,ushort status,ushort errors,uint counter) 
         {
             var msg = new mavlink_hydrogen_plant_t();
 
+            msg.identifikator = identifikator;
             msg.current = current;
             msg.battery_voltage = battery_voltage;
             msg.output_voltage = output_voltage;
@@ -13475,10 +13477,16 @@ public partial class MAVLink
         //[FieldOffset(32)]
         public  ushort errors;
 
+        /// <summary>ID Hydrogen plant.   </summary>
+        [Units("")]
+        [Description("ID Hydrogen plant.")]
+        //[FieldOffset(34)]
+        public  sbyte identifikator;
+
         /// <summary>Fan PWM duty cycle.  [%] </summary>
         [Units("[%]")]
         [Description("Fan PWM duty cycle.")]
-        //[FieldOffset(34)]
+        //[FieldOffset(35)]
         public  byte fan;
     };
 

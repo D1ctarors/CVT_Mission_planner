@@ -5335,6 +5335,7 @@ f.ESC_TELEMETRY_29_TO_32_count_1 = ProtoField.new("count[1] (uint16_t)", "mavlin
 f.ESC_TELEMETRY_29_TO_32_count_2 = ProtoField.new("count[2] (uint16_t)", "mavlink_proto.ESC_TELEMETRY_29_TO_32_count_2", ftypes.UINT16, nil)
 f.ESC_TELEMETRY_29_TO_32_count_3 = ProtoField.new("count[3] (uint16_t)", "mavlink_proto.ESC_TELEMETRY_29_TO_32_count_3", ftypes.UINT16, nil)
 
+f.HYDROGEN_PLANT_identifikator = ProtoField.new("identifikator (int8_t)", "mavlink_proto.HYDROGEN_PLANT_identifikator", ftypes.INT8, nil)
 f.HYDROGEN_PLANT_current = ProtoField.new("current (float)", "mavlink_proto.HYDROGEN_PLANT_current", ftypes.FLOAT, nil)
 f.HYDROGEN_PLANT_battery_voltage = ProtoField.new("battery_voltage (float)", "mavlink_proto.HYDROGEN_PLANT_battery_voltage", ftypes.FLOAT, nil)
 f.HYDROGEN_PLANT_output_voltage = ProtoField.new("output_voltage (float)", "mavlink_proto.HYDROGEN_PLANT_output_voltage", ftypes.FLOAT, nil)
@@ -18564,13 +18565,16 @@ end
 -- dissect payload of message type HYDROGEN_PLANT
 function payload_fns.payload_11045(buffer, tree, msgid, offset, limit, pinfo)
     local padded, field_offset, value, subtree, tvbrange
-    if (offset + 35 > limit) then
+    if (offset + 36 > limit) then
         padded = buffer(0, limit):bytes()
-        padded:set_size(offset + 35)
+        padded:set_size(offset + 36)
         padded = padded:tvb("Untruncated payload")
     else
         padded = buffer
     end
+    tvbrange = padded(offset + 34, 1)
+    value = tvbrange:le_int()
+    subtree = tree:add_le(f.HYDROGEN_PLANT_identifikator, tvbrange, value)
     tvbrange = padded(offset + 0, 4)
     value = tvbrange:le_float()
     subtree = tree:add_le(f.HYDROGEN_PLANT_current, tvbrange, value)
@@ -18595,7 +18599,7 @@ function payload_fns.payload_11045(buffer, tree, msgid, offset, limit, pinfo)
     tvbrange = padded(offset + 28, 2)
     value = tvbrange:le_int()
     subtree = tree:add_le(f.HYDROGEN_PLANT_temperature_2, tvbrange, value)
-    tvbrange = padded(offset + 34, 1)
+    tvbrange = padded(offset + 35, 1)
     value = tvbrange:le_uint()
     subtree = tree:add_le(f.HYDROGEN_PLANT_fan, tvbrange, value)
     tvbrange = padded(offset + 30, 2)
