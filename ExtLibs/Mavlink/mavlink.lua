@@ -471,6 +471,7 @@ local enumEntryName = {
         [260] = "MAV_CMD_OBLIQUE_SURVEY",
         [262] = "MAV_CMD_DO_SET_STANDARD_MODE",
         [300] = "MAV_CMD_MISSION_START",
+        [310] = "MAV_CMD_DO_HYDROGEN_CONTROL",
         [400] = "MAV_CMD_COMPONENT_ARM_DISARM",
         [401] = "MAV_CMD_RUN_PREARM_CHECKS",
         [410] = "MAV_CMD_GET_HOME_POSITION",
@@ -3116,6 +3117,14 @@ f.cmd_MAV_CMD_DO_SET_STANDARD_MODE_param1 = ProtoField.new("param1: Standard Mod
 
 f.cmd_MAV_CMD_MISSION_START_param1 = ProtoField.new("param1: First Item (float)", "mavlink_proto.cmd_MAV_CMD_MISSION_START_param1", ftypes.FLOAT, nil)
 f.cmd_MAV_CMD_MISSION_START_param2 = ProtoField.new("param2: Last Item (float)", "mavlink_proto.cmd_MAV_CMD_MISSION_START_param2", ftypes.FLOAT, nil)
+
+f.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param1 = ProtoField.new("param1: ID (float)", "mavlink_proto.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param1", ftypes.FLOAT, nil)
+f.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param2 = ProtoField.new("param2: Enable (float)", "mavlink_proto.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param2", ftypes.FLOAT, nil)
+f.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param3 = ProtoField.new("param3: Unused (float)", "mavlink_proto.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param3", ftypes.FLOAT, nil)
+f.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param4 = ProtoField.new("param4: Unused (float)", "mavlink_proto.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param4", ftypes.FLOAT, nil)
+f.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param5 = ProtoField.new("param5: Unused (float)", "mavlink_proto.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param5", ftypes.FLOAT, nil)
+f.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param6 = ProtoField.new("param6: Unused (float)", "mavlink_proto.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param6", ftypes.FLOAT, nil)
+f.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param7 = ProtoField.new("param7: Unused (float)", "mavlink_proto.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param7", ftypes.FLOAT, nil)
 
 f.cmd_MAV_CMD_COMPONENT_ARM_DISARM_param1 = ProtoField.new("param1: Arm (float)", "mavlink_proto.cmd_MAV_CMD_COMPONENT_ARM_DISARM_param1", ftypes.FLOAT, nil)
 f.cmd_MAV_CMD_COMPONENT_ARM_DISARM_param2 = ProtoField.new("param2: Force (float)", "mavlink_proto.cmd_MAV_CMD_COMPONENT_ARM_DISARM_param2", ftypes.FLOAT, nil)
@@ -25913,6 +25922,56 @@ function payload_fns.payload_75_cmd300(buffer, tree, msgid, offset, limit, pinfo
     value = tvbrange:le_float()
     subtree = tree:add_le(f.COMMAND_INT_z, tvbrange, value)
 end
+-- dissect payload of message type COMMAND_INT with command MAV_CMD_DO_HYDROGEN_CONTROL
+function payload_fns.payload_75_cmd310(buffer, tree, msgid, offset, limit, pinfo)
+    local padded, field_offset, value, subtree, tvbrange
+    if (offset + 35 > limit) then
+        padded = buffer(0, limit):bytes()
+        padded:set_size(offset + 35)
+        padded = padded:tvb("Untruncated payload")
+    else
+        padded = buffer
+    end
+    tvbrange = padded(offset + 30, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.COMMAND_INT_target_system, tvbrange, value)
+    tvbrange = padded(offset + 31, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.COMMAND_INT_target_component, tvbrange, value)
+    tvbrange = padded(offset + 32, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.COMMAND_INT_frame, tvbrange, value)
+    tvbrange = padded(offset + 28, 2)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.COMMAND_INT_command, tvbrange, value)
+    tvbrange = padded(offset + 33, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.COMMAND_INT_current, tvbrange, value)
+    tvbrange = padded(offset + 34, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.COMMAND_INT_autocontinue, tvbrange, value)
+    tvbrange = padded(offset + 0, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param1, tvbrange, value)
+    tvbrange = padded(offset + 4, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param2, tvbrange, value)
+    tvbrange = padded(offset + 8, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param3, tvbrange, value)
+    tvbrange = padded(offset + 12, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param4, tvbrange, value)
+    tvbrange = padded(offset + 16, 4)
+    value = tvbrange:le_int()
+    subtree = tree:add_le(f.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param5, tvbrange, value)
+    tvbrange = padded(offset + 20, 4)
+    value = tvbrange:le_int()
+    subtree = tree:add_le(f.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param6, tvbrange, value)
+    tvbrange = padded(offset + 24, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param7, tvbrange, value)
+end
 -- dissect payload of message type COMMAND_INT with command MAV_CMD_COMPONENT_ARM_DISARM
 function payload_fns.payload_75_cmd400(buffer, tree, msgid, offset, limit, pinfo)
     local padded, field_offset, value, subtree, tvbrange
@@ -35719,6 +35778,50 @@ function payload_fns.payload_76_cmd300(buffer, tree, msgid, offset, limit, pinfo
     tvbrange = padded(offset + 24, 4)
     value = tvbrange:le_float()
     subtree = tree:add_le(f.COMMAND_LONG_param7, tvbrange, value)
+end
+-- dissect payload of message type COMMAND_LONG with command MAV_CMD_DO_HYDROGEN_CONTROL
+function payload_fns.payload_76_cmd310(buffer, tree, msgid, offset, limit, pinfo)
+    local padded, field_offset, value, subtree, tvbrange
+    if (offset + 33 > limit) then
+        padded = buffer(0, limit):bytes()
+        padded:set_size(offset + 33)
+        padded = padded:tvb("Untruncated payload")
+    else
+        padded = buffer
+    end
+    tvbrange = padded(offset + 30, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.COMMAND_LONG_target_system, tvbrange, value)
+    tvbrange = padded(offset + 31, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.COMMAND_LONG_target_component, tvbrange, value)
+    tvbrange = padded(offset + 28, 2)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.COMMAND_LONG_command, tvbrange, value)
+    tvbrange = padded(offset + 32, 1)
+    value = tvbrange:le_uint()
+    subtree = tree:add_le(f.COMMAND_LONG_confirmation, tvbrange, value)
+    tvbrange = padded(offset + 0, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param1, tvbrange, value)
+    tvbrange = padded(offset + 4, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param2, tvbrange, value)
+    tvbrange = padded(offset + 8, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param3, tvbrange, value)
+    tvbrange = padded(offset + 12, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param4, tvbrange, value)
+    tvbrange = padded(offset + 16, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param5, tvbrange, value)
+    tvbrange = padded(offset + 20, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param6, tvbrange, value)
+    tvbrange = padded(offset + 24, 4)
+    value = tvbrange:le_float()
+    subtree = tree:add_le(f.cmd_MAV_CMD_DO_HYDROGEN_CONTROL_param7, tvbrange, value)
 end
 -- dissect payload of message type COMMAND_LONG with command MAV_CMD_COMPONENT_ARM_DISARM
 function payload_fns.payload_76_cmd400(buffer, tree, msgid, offset, limit, pinfo)

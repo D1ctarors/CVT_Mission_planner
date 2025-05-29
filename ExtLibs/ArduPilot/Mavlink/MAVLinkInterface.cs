@@ -1092,9 +1092,6 @@ Mission Planner waits for 2 valid heartbeat packets before connecting
             MAVlist[message.sysid, message.compid].sysid = message.sysid;
             MAVlist[message.sysid, message.compid].compid = message.compid;
             MAVlist[message.sysid, message.compid].recvpacketcount = message.seq;
-            log.InfoFormat("ID sys {0} comp {1} ver{2} type {3} name {4}", message.sysid, message.compid,
-                mavlinkversion,
-                MAVlist[message.sysid, message.compid].aptype.ToString(), MAVlist[message.sysid, message.compid].apname.ToString());
 
             var sub = SubscribeToPacketType(MAVLINK_MSG_ID.HYDROGEN_PLANT, buffer =>
             {
@@ -1113,8 +1110,7 @@ Mission Planner waits for 2 valid heartbeat packets before connecting
                 MAV.cs.h_plant_errors = hydrogenPlant.errors;
                 MAV.cs.h_plant_counter = (int)hydrogenPlant.counter;
 
-                log.Info($"HYDROGEN_PLANT Status: {MAV.cs.GetStatusDescription()}");
-                log.Info($"HYDROGEN_PLANT Errors: {MAV.cs.GetErrorsDescription()}");
+                
 
                 MAV.cs.UpdateData();
 
@@ -1164,7 +1160,6 @@ Mission Planner waits for 2 valid heartbeat packets before connecting
                 readcount++;
                 if (buffer.Length > 5)
                 {
-                    //log.Info("getHB packet received: " + buffer.Length + " btr " + BaseStream.BytesToRead + " type " + buffer.msgid );
                     if (buffer.msgid == (byte) MAVLINK_MSG_ID.HEARTBEAT)
                     {
                         mavlink_heartbeat_t hb = buffer.ToStructure<mavlink_heartbeat_t>();

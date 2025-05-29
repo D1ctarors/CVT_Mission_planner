@@ -46,7 +46,7 @@ using System.Numerics;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using static MAVLink;
 using DroneCAN;
-using YourNamespace;
+using HydrogenPlantSpace;
 
 namespace MissionPlanner
 {
@@ -67,6 +67,7 @@ namespace MissionPlanner
             public abstract Image sim { get; }
             public abstract Image terminal { get; }
             public abstract Image help { get; }
+            public abstract Image hydrogen { get; }
             public abstract Image donate { get; }
             public abstract Image connect { get; }
             public abstract Image disconnect { get; }
@@ -151,6 +152,17 @@ namespace MissionPlanner
                         return Image.FromFile($"{running_directory}light_help_icon.png");
                     else
                         return global::MissionPlanner.Properties.Resources.light_help_icon;
+                }
+            }
+
+            public override Image hydrogen
+            {
+                get
+                {
+                    if (File.Exists($"{running_directory}light_hydrogen_icon.png"))
+                        return Image.FromFile($"{running_directory}light_hydrogen_icon.png");
+                    else
+                        return global::MissionPlanner.Properties.Resources.light_hydrogen_icon;
                 }
             }
 
@@ -288,6 +300,17 @@ namespace MissionPlanner
                         return Image.FromFile($"{running_directory}dark_help_icon.png");
                     else
                         return global::MissionPlanner.Properties.Resources.dark_help_icon;
+                }
+            }
+
+            public override Image hydrogen
+            {
+                get
+                {
+                    if (File.Exists($"{running_directory}dark_hydrogen_icon.png"))
+                        return Image.FromFile($"{running_directory}dark_hydrogen_icon.png");
+                    else
+                        return global::MissionPlanner.Properties.Resources.dark_hydrogen_icon;
                 }
             }
 
@@ -4064,7 +4087,14 @@ namespace MissionPlanner
             log.Info("this   width " + this.Width + " height " + this.Height);
         }
 
+        
         private void MenuHelp_Click(object sender, EventArgs e)
+        {
+            MyView.ShowScreen("Help");
+        }
+
+        
+        private void MenuHydrogen_Click(object sender, EventArgs e)
         {
             FormEmpty emptyForm = new FormEmpty();
             emptyForm.Show();
@@ -4081,6 +4111,8 @@ namespace MissionPlanner
                 MessageBox.Show("Ошибка: MAV.cs = null");
             }
         }
+        
+
 
 
 
@@ -4706,11 +4738,11 @@ namespace MissionPlanner
         {
             try
             {
-                System.Diagnostics.Process.Start("https://ardupilot.org/?utm_source=Menu&utm_campaign=MP");
+                System.Diagnostics.Process.Start("https://chteh.tilda.ws/cvt");
             }
             catch
             {
-                CustomMessageBox.Show("Failed to open url https://ardupilot.org");
+                CustomMessageBox.Show("Failed to open url https://chteh.tilda.ws/cvt");
             }
         }
 
